@@ -20,6 +20,9 @@ int main() {
     // claim that the top elements consist of an increasing subsequence, and
     // this, in fact, is one of the longest increasing subsequences stacks are
     // represented by the last element we put on them
+    //
+    // another implementation that also retrieves the answer - 
+    // https://sites.google.com/site/indy256/algo/lis_nlogn
 
     for (auto &x : a) cin >> x;
     for (int i = 0; i < n; ++i) {
