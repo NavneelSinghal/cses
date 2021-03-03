@@ -156,9 +156,9 @@ void precompute() {}
 
 struct graph_edge_pointers {
     struct edge {
-        int to, nxt;  // to = other vertex,
+        int to, nxt, disable;  // to = other vertex,
                                // nxt = index of the prev edge from cur vertex
-        edge(int to, int nxt) : to(to), nxt(nxt) {}
+        edge(int to, int nxt) : to(to), nxt(nxt), disable(0) {}
     };
 
     vector<int>
@@ -175,6 +175,7 @@ struct graph_edge_pointers {
     }
 
     // while adding (u, v), (v, u), we have i, i^1 as corresponding edges
+    // edge index in input = i >> 1
     void add_edge(int u, int v) {
         edges.emplace_back(v, head[u]);
         head[u] = cur_edges++;
@@ -253,7 +254,7 @@ void solve(int) {
         if (!in_parity[u]) in_parity[g.edges[parent_edge_index ^ 1].to] ^= 1;
         dir[parent_edge_index >> 1] =
             in_parity[u] ^ (parent_edge_index & 1) ^ 1;
-        in_parity[u] = 0; // after the above assignments, we can do this
+        in_parity[u] = 0;  // after the above assignments, we can do this
     };
 
     for (int i = 0; i < n; ++i) {
