@@ -68,29 +68,36 @@ int main() {
         int n, m;
         cin >> n >> m;
         vector<vector<int>> g(n);
-        vector<int> deg(n);
+        vector<int> indeg(n), outdeg(n);
         for (int i = 0; i < m; ++i) {
             int u, v;
             cin >> u >> v;
             --u, --v;
             g[u].push_back(v);
-            g[v].push_back(u);
-            ++deg[v];
-            ++deg[u];
+            ++indeg[v];
+            ++outdeg[u];
         }
+        bool works = true;
         for (int i = 0; i < n; ++i) {
-            if (deg[i] & 1) {
-                cout << "IMPOSSIBLE\n";
-                return 0;
+            if (i == 0) {
+                if (indeg[i] != outdeg[i] - 1) works = false;
+            } else if (i == n - 1) {
+                if (indeg[i] != outdeg[i] + 1) works = false;
+            } else {
+                if (indeg[i] != outdeg[i]) works = false;
             }
         }
-        EulerTour<false> et(g);
-        auto path = et.get_tour();
-        if ((int)path.size() == m + 1) {
-            for (auto x : path) cout << x + 1 << ' ';
-            cout << '\n';
-        } else {
+        EulerTour<true> e(g);
+        if (!works) {
             cout << "IMPOSSIBLE\n";
+        } else {
+            auto path = e.get_tour();
+            if ((int)path.size() == m + 1) {
+                for (auto v : path) cout << v + 1 << ' ';
+                cout << '\n';
+            } else {
+                cout << "IMPOSSIBLE\n";
+            }
         }
     }
 }
